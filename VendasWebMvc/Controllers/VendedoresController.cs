@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using VendasWebMvc.Models;
 using VendasWebMvc.Service;
 
 namespace VendasWebMvc.Controllers
@@ -11,11 +12,22 @@ namespace VendasWebMvc.Controllers
         {
             _vendedoorService = vendedoorService;
         }
-
         public IActionResult Index()
         {
             var vendedores = _vendedoorService.TodosVendedores();
             return View(vendedores);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Vendedor vendedor)
+        {
+            _vendedoorService.Insert(vendedor);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
