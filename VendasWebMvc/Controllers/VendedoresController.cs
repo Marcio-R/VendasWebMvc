@@ -7,11 +7,14 @@ namespace VendasWebMvc.Controllers
     public class VendedoresController : Controller
     {
         private readonly VendedorService _vendedoorService;
+        private readonly DepartamentoService _departamentoService;
 
-        public VendedoresController(VendedorService vendedoorService)
+        public VendedoresController(VendedorService vendedoorService, DepartamentoService departamentoService)
         {
             _vendedoorService = vendedoorService;
+            _departamentoService = departamentoService;
         }
+
         public IActionResult Index()
         {
             var vendedores = _vendedoorService.TodosVendedores();
@@ -20,7 +23,9 @@ namespace VendasWebMvc.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var departamentos = _departamentoService.GetDepartamentos();
+            var viewModel = new VendedorFormViewModel { Departamentos = departamentos };
+            return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
