@@ -49,7 +49,18 @@ namespace VendasWebMvc.Controllers
             }
             return View(vend);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            _vendedoorService.Remover(id);
+            return RedirectToAction(nameof(Index));
 
+        }
         public IActionResult Detalhes(int? id)
         {
             if (id == null)
