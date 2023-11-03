@@ -96,7 +96,7 @@ namespace VendasWebMvc.Controllers
         {
             if (id != vendedor.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
             try
             {
@@ -104,16 +104,15 @@ namespace VendasWebMvc.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
-            catch (NotFoundException)
+            catch (ApplicationException e)
             {
-
-                return NotFound();
+                return RedirectToAction(nameof(Error), new {message = e.Message});
             }
-            catch (DbConcurrencyException)
-            {
+        }
 
-                return BadRequest();
-            }
+        private object Error()
+        {
+            throw new NotImplementedException();
         }
     }
 }

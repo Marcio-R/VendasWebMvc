@@ -1,13 +1,24 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace VendasWebMvc.Models
 {
     public class Vendedor
     {
         public int Id { get; set; }
+        [Display(Name = "Nome")]
         public string Nome { get; set; }
+
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [Display(Name = "Salário base")]
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         public double Salario { get; set; }
+
+        [Display(Name = "Data Nascimento")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataNascimento { get; set; }
         public Departamento Departamento { get; set; }
         public int DepartamentoId { get; set; }
