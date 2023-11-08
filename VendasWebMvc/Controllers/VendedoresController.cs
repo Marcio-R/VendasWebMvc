@@ -32,10 +32,10 @@ namespace VendasWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Vendedor vendedor)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var departamento = _departamentoService.GetDepartamentos();
-                var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamento };
+                var departamentos = _departamentoService.GetDepartamentos();
+                var viewModel = new VendedorFormViewModel { Departamentos = departamentos , Vendedor = vendedor };
                 return View(viewModel);
             }
             _vendedoorService.Insert(vendedor);
@@ -100,7 +100,7 @@ namespace VendasWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int? id, Vendedor vendedor)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 var departamento = _departamentoService.GetDepartamentos();

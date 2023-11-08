@@ -19,7 +19,7 @@ namespace VendasWebMvc.Models
         [Display(Name = "Salário base")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
         [Required(ErrorMessage = "{0} requerido")]
-        [Range(0,100.000, ErrorMessage = "{0} O salário tem que ser no minimo {1} maximo {2}!")]
+        [Range(0,100000, ErrorMessage = "{0} O salário tem que ser no minimo {1} maximo {2}!")]
         public double Salario { get; set; }
 
         [Display(Name = "Data Nascimento")]
