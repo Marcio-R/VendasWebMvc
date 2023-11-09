@@ -14,35 +14,44 @@ namespace VendasWebMvc.Service
             Context = context;
         }
 
-        public List<Vendedor> TodosVendedores()
+        public async Task<List<Vendedor>> TodosVendedores()
         {
-            return Context.Vendedor.ToList();
+            return await Context.Vendedor.ToListAsync();
         }
-        public void Insert(Vendedor vendedor)
+        public async Task Insert(Vendedor vendedor)
         {
             Context.Add(vendedor);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
-        public Vendedor GetId(int id)
+        public async Task<Vendedor> GetId(int id)
         {
-            return Context.Vendedor.Include(obj => obj.Departamento).FirstOrDefault(obj => obj.Id == id);
+            return await Context.Vendedor.Include(obj => obj.Departamento).FirstOrDefaultAsync(obj => obj.Id == id);
         }
-        public void Remover(int id)
+        public async Task Remover(int id)
         {
-            var obj = Context.Vendedor.Find(id);
-            Context.Vendedor.Remove(obj);
-            Context.SaveChanges();
+            try
+            {
+
+                var obj = await Context.Vendedor.FindAsync(id);
+                Context.Vendedor.Remove(obj);
+                await Context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-        public void Atualizar(Vendedor obj)
+        public async Task Atualizar(Vendedor obj)
         {
-            if (!Context.Vendedor.Any(x => x.Id == obj.Id))
+            bool hasAny = await Context.Vendedor.AnyAsync(x => x.Id == obj.Id);
+            if (!hasAny)
             {
                 throw new NotFoundException("Id não encontrado");
             }
             try
             {
                 Context.Update(obj);
-                Context.SaveChanges();
+                await Context.SaveChangesAsync();
 
             }
             catch (DbUpdateConcurrencyException e)
